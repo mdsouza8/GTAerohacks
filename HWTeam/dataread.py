@@ -52,7 +52,8 @@ for i in tuple(range(60)):  # convert to tuple for speed
         print lArr
         obj[lArr[0]] = float(lArr[1])
         temp = ser.readline()
-        print temp
+        print lArr
+        lArr = temp.split(':')
         obj[lArr[0]] = float(lArr[1])/4
         print obj
         json.dumps(obj)
