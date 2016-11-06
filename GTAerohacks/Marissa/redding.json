@@ -1,0 +1,34 @@
+{
+    "config":
+        [
+            {
+                "field_name": "geometry",
+                "config": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            [-120.1519, 37.8014],
+                            [-120.1519, 37.9152],
+                            [-120.0049, 37.9152],
+                            [-120.0049, 37.8014],
+                            [-120.1519, 37.8014]
+                        ]
+                    ]
+                },
+                "type": "GeometryFilter"
+            }, {
+                "field_name": "acquired",
+                "config": {
+                    "gte": "2013-05-03T00:00:00.000Z",
+                    "lte": "2014-05-11T00:00:00.000Z"},
+                    "type": "DateRangeFilter"
+                }, {
+                    "field_name": "cloud_cover",
+                    "config": {
+                        "lte": 0.0002
+                    },
+                    "type": "RangeFilter"
+                    }
+            ],
+            "type": "AndFilter"
+}
