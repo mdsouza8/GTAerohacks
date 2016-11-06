@@ -11,10 +11,21 @@ from os import system                       # for clearing screen
 import json                                 # javascript interfacing
 
 system("clear")
-serialport = '/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0'
+serialport1 = '/dev/serial/by-path/platform-3f980000.usb-usb-0:1.2:1.0'
+serialport2 = '/dev/serial/by-path/platform-3f980000.usb-usb-0:1.3:1.0'
+
 
 # Initialize serial connection:
-ser = Serial(port=serialport, baudrate=9600, timeout=10)
+try:
+    ser = Serial(port=serialport1, baudrate=9600, timeout=10)
+except SerialException:
+    try:
+        ser = Serial(port=serialport2, baudrate=9600, timeout=10)
+    except SerialException:
+        print "Fatal Serial Error. Closing program"
+        quit()
+
+f = open("/home/pi/AeroHacks/data.txt", "w")
 
 # Reading data stream and converting to JSON
 #     2-minute data read   => 120s
@@ -42,13 +53,18 @@ for i in tuple(range(60)):  # convert to tuple for speed
         obj[lArr[0]] = float(lArr[1])
         temp = ser.readline()
         print temp
-        obj[lArr[0]] = float(lArr[1])
+        obj[lArr[0]] = float(lArr[1])/4
         print obj
         json.dumps(obj)
+        f.write(gas_volt)
+        f.write(pressure)
+        f.write(humidity)
+        f.write(lArr[0])
+        f.write(str(float(lArr[1]) / 4))
         sleep(1.92) 
     except SerialException:
         print "Serial Exception! Maybe port disconnected?"
         break
-
+f.close()
 quit()
 
